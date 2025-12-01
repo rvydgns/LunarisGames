@@ -1,5 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: f54d1bd14bd3ca042bd867b519fee8cc
+=======
+<<<<<<<< HEAD:Assets/Leveller.meta
+guid: e41b007420ae38049b5e33aafb9a6a98
+========
+guid: f54d1bd14bd3ca042bd867b519fee8cc
+>>>>>>>> 1906cfaaa507e42aae4b1ce15b63da868dcea2a2:Assets/TextMesh Pro.meta
+>>>>>>> 1906cfaaa507e42aae4b1ce15b63da868dcea2a2
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
