@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 600a1c211e3fa405caf3e66bcb76d960
+guid: 5588e3ad2fe20b84b835e0382f59f8d6
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -34,9 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-=======
     filterMode: 0
->>>>>>> 1e699adc (player + UI + health updates):Assets/GothicVania Church/Environment/tileset.png.meta
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -50,7 +48,7 @@ TextureImporter:
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -65,22 +63,16 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
-<<<<<<< HEAD:Assets/UI/Gamelogo/Echoes of (2).png.meta
-  applyGammaDecoding: 0
-  swizzle: 50462976
-  cookieLightType: 0
-=======
   applyGammaDecoding: 1
   swizzle: 50462976
   cookieLightType: 1
->>>>>>> 1e699adc (player + UI + health updates):Assets/GothicVania Church/Environment/tileset.png.meta
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -93,7 +85,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -106,18 +98,14 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
-<<<<<<< HEAD:Assets/UI/Gamelogo/Echoes of (2).png.meta
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-=======
     forceMaximumCompressionQuality_BC6H_BC7: 1
->>>>>>> 1e699adc (player + UI + health updates):Assets/GothicVania Church/Environment/tileset.png.meta
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -523,20 +511,13 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-<<<<<<< HEAD:Assets/UI/Gamelogo/Echoes of (2).png.meta
-    spriteID: 5e97eb03825dee720800000000000000
-=======
     spriteID: b1996ece4ea1141f78611ff970493fab
->>>>>>> 1e699adc (player + UI + health updates):Assets/GothicVania Church/Environment/tileset.png.meta
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-<<<<<<< HEAD:Assets/UI/Gamelogo/Echoes of (2).png.meta
-    nameFileIdTable: {}
-=======
     nameFileIdTable:
       tileset_0: 906522422
       tileset_1: -1648336355
@@ -557,7 +538,6 @@ TextureImporter:
       tileset_7: -149692309
       tileset_8: -1606887016
       tileset_9: -978960267
->>>>>>> 1e699adc (player + UI + health updates):Assets/GothicVania Church/Environment/tileset.png.meta
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
