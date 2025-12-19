@@ -1,25 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ClearSky
 {
     public class PlayerHealth : MonoBehaviour
     {
-        [Header("Health Settings")]
         public int maxHealth = 100;
         public int currentHealth;
 
-        [Header("Knockback Settings")]
-        public float knockbackForceX = 5f;
-        public float knockbackForceY = 2f;
-
-        [Header("References")]
         private Animator anim;
         private Rigidbody2D rb;
-        private SimplePlayerController controller;
+        private PlayerMovement movement;
         private PlayerRespawn respawnSystem;
-        private GameUI ui;
+        private UIManager ui;
 
         private bool isDead = false;
 
@@ -28,19 +20,47 @@ namespace ClearSky
             currentHealth = maxHealth;
             anim = GetComponent<Animator>();
             rb = GetComponent<Rigidbody2D>();
-            controller = GetComponent<SimplePlayerController>();
+            movement = GetComponent<PlayerMovement>();
             respawnSystem = GetComponent<PlayerRespawn>();
-            ui = FindObjectOfType<GameUI>();
+            ui = FindObjectOfType<UIManager>();
         }
 
+        private void Update()
+        {
+            HandleLioraHealPower();
+        }
+
+        // ============================
+        // LIORA HEAL POWER (+20 HP)
+        // ============================
+        private void HandleLioraHealPower()
+        {
+            if (GameManager.instance == null) return;
+            if (!GameManager.instance.isBossFightActive) return;
+            if (!GameManager.instance.hasLioraHeal) return;
+            if (isDead) return;
+
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                Heal(20);
+
+                GameManager.instance.hasLioraHeal = false;
+
+                if (ui != null)
+                    ui.HideLioraHealPowerUI();
+
+                Debug.Log("Liora Heal Power kullanıldı (+20 HP)");
+            }
+        }
+
+        // ============================
+        // DAMAGE & DEATH
+        // ============================
         public void TakeDamage(int amount, int attackerDirection)
         {
             if (isDead) return;
 
             currentHealth -= amount;
-            anim.SetTrigger("hurt");
-
-            ApplyKnockback(attackerDirection);
 
             if (currentHealth <= 0)
             {
@@ -48,35 +68,46 @@ namespace ClearSky
             }
         }
 
-        private void ApplyKnockback(int attackerDirection)
-        {
-            rb.velocity = Vector2.zero;
-
-            float direction = attackerDirection == 0 ? -1 : attackerDirection;
-
-            rb.AddForce(new Vector2(direction * knockbackForceX, knockbackForceY), ForceMode2D.Impulse);
-        }
-
         private void Die()
         {
             isDead = true;
+
             anim.SetTrigger("die");
-
-            controller.enabled = false;
             rb.velocity = Vector2.zero;
+            rb.simulated = false;
+            movement.enabled = false;
 
-            Invoke(nameof(OpenDeathUI), 1.2f); 
+            Invoke(nameof(Respawn), 0.8f);
         }
 
-        private void OpenDeathUI()
+        private void Respawn()
         {
-            ui.ShowDeathScreen();
+            rb.simulated = true;
+            movement.enabled = true;
+            respawnSystem.RespawnPlayer();
         }
 
+        // ============================
+        // HEAL FUNCTIONS
+        // ============================
         public void RestoreFullHealth()
         {
             currentHealth = maxHealth;
             isDead = false;
+        }
+
+        public void Heal(int amount)
+        {
+            if (isDead) return;
+
+            currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+
+            Debug.Log("Heal uygulandı. Güncel HP: " + currentHealth);
+
+            if (ui != null)
+            {
+                // ui.UpdateHealth(currentHealth); // UI hazır olunca açılır
+            }
         }
     }
 }

@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -47,5 +48,27 @@ TagManager:
   - name: BackgroundMid
     uniqueID: 4178185717
     locked: 0
-  - name: BackgroundNear
-    uniqueID
+  - name: BackgroundNear uniqueID
+    uniqueID: 1
+    locked: 0
+  - name: StaticBG
+    uniqueID: 413321787
+    locked: 0
+  - name: Items
+    uniqueID: 2598820921
+    locked: 0
+  - name: Ground_Decor
+    uniqueID: 878715363
+    locked: 0
+  - name: Ground_Path
+    uniqueID: 3709132277
+    locked: 0
+  - name: Player
+    uniqueID: 3870228237
+    locked: 0
+  - name: DecorationFront
+    uniqueID: 1291420399
+    locked: 0
+  - name: UI
+    uniqueID: 2254344405
+    locked: 0

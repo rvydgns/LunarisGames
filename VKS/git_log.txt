@@ -1,0 +1,42 @@
+* 552d622c (origin/Level4) health bar yapıldı
+* a9159d89 Added Level 4 Scene Design
+| * 0f7df0c6 (origin/LastVersion) Last Version Done
+| | * dc0573c4 (origin/Level1) Level 1 Bug Fixed
+| | * 500de512 layer bugs solved
+| | * 91dc9560 düzenleme
+| | | * 3116a41f (HEAD -> level2, origin/level2) Add level 2 scene
+| | | *   4796c37d Merge Level1 into level2 (resolved TagManager conflict)
+| | | |\  
+| | | |/  
+| | |/|   
+| | * | 51f7e7b2 Level 1 Last Version
+| |/ /  
+|/| |   
+* | |   7e4b739c Merge branch 'develop' of https://github.com/rvydgns/LunarisGames into develop
+|\ \ \  
+| * | | 1e699adc player + UI + health updates
+* | | | c1f17977 Level 1 Scene Setup All Done
+| | | * 4657c3e3 Fix Unity merge conflicts
+| | | * c015b6e4 (origin/develop, develop) player + UI + health updates
+| |_|/  
+|/| |   
+* | | df763421 düzenleme
+* | | ca2a31d7 Düzenleme
+* | |   d9e5f612 Düzenleme
+|\ \ \  
+| * | | 1906cfaa Başlangıç sayfası yapıldı
+| |/ /  
+* | | 40c2f515 Setup initial scene layout
+* | | 0333cc3d Merge branch 'develop' of https://github.com/rvydgns/LunarisGames into develop
+|\| | 
+| * | 1963247d UI assets added to project
+* | | bae0ab4d Removing unnecassary assets
+|/ /  
+* | d7818af9 Add visual assets to project
+* | 89f488e9 chore: adding Unity project
+|/  
+| * b7c8aa6b (origin/documents) Add full game script and level flow
+| * 67a4f1b8 Add scene and character descriptions
+| * 24fd7444 Added technical document  v1 to "documents" branch
+|/  
+* a008b046 (origin/main, origin/develop2, origin/HEAD, main) Initial commit
