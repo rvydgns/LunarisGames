@@ -4,50 +4,93 @@ namespace ClearSky
 {
     public class PlayerRespawn : MonoBehaviour
     {
+        [Header("Checkpoint")]
         public Transform currentCheckpoint;
-        private PlayerHealth health;
+
+        [Header("Fall Death Settings")]
+        public float deathY = -20f;
+
         private Animator anim;
         private SimplePlayerController controller;
         private Rigidbody2D rb;
 
+        private bool isRespawning = false;
+
         private void Awake()
         {
-            health = GetComponent<PlayerHealth>();
             anim = GetComponent<Animator>();
             controller = GetComponent<SimplePlayerController>();
             rb = GetComponent<Rigidbody2D>();
         }
 
+        private void Start()
+        {
+            // Level başında checkpoint yoksa SpawnPoint al
+            if (currentCheckpoint == null)
+            {
+                GameObject spawnPoint = GameObject.Find("SpawnPoint");
+                if (spawnPoint != null)
+                {
+                    currentCheckpoint = spawnPoint.transform;
+                }
+            }
+
+            if (currentCheckpoint != null)
+            {
+                transform.position = currentCheckpoint.position;
+            }
+        }
+
+        private void Update()
+        {
+            // Aşağı düşerse SADECE respawn (can işini PlayerHealth çözer)
+            if (!isRespawning && transform.position.y < deathY)
+            {
+                Respawn();
+            }
+        }
+
+        // Checkpoint trigger çağırır
         public void SetCheckpoint(Transform checkpoint)
         {
             currentCheckpoint = checkpoint;
+            Debug.Log("Checkpoint set: " + checkpoint.name);
         }
 
-        public void RespawnPlayer()
+        // ⭐ PlayerHealth ve DeathZone burayı çağırır
+        public void Respawn()
         {
-            if (currentCheckpoint == null)
-            {
-                Debug.LogWarning("No checkpoint assigned!");
+            if (currentCheckpoint == null || isRespawning)
                 return;
+
+            isRespawning = true;
+
+            // Kontrolleri kapat
+            if (controller != null)
+                controller.enabled = false;
+
+            // Fizik temizle
+            if (rb != null)
+            {
+                rb.velocity = Vector2.zero;
+                rb.angularVelocity = 0f;
             }
 
-            // 1. Karakteri kontrol edilmeyen ölüm pozisyonundan kurtar
-            rb.velocity = Vector2.zero;
-
-            // 2. Karakteri checkpoint pozisyonuna taşı
+            // Checkpoint'e taşı
             transform.position = currentCheckpoint.position;
 
-            // 3. Sağlığı full yap
-            health.RestoreFullHealth();
+            // Animasyon reset
+            if (anim != null)
+            {
+                anim.ResetTrigger("die");
+                anim.Play("Idle");
+            }
 
-            // 4. Karakter davranışlarını aç
-            controller.enabled = true;
+            // Kontrolleri aç
+            if (controller != null)
+                controller.enabled = true;
 
-            // 5. Ölüm animasyonunu kapat
-            anim.ResetTrigger("die");
-            anim.Play("Idle"); // Idle animasyonuna dön
-
-            Debug.Log("Player Respawned!");
+            isRespawning = false;
         }
     }
 }

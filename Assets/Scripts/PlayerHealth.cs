@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ClearSky
@@ -14,7 +12,6 @@ namespace ClearSky
         public float knockbackForceX = 5f;
         public float knockbackForceY = 2f;
 
-        [Header("References")]
         private Animator anim;
         private Rigidbody2D rb;
         private SimplePlayerController controller;
@@ -26,11 +23,16 @@ namespace ClearSky
         private void Awake()
         {
             currentHealth = maxHealth;
+
             anim = GetComponent<Animator>();
             rb = GetComponent<Rigidbody2D>();
             controller = GetComponent<SimplePlayerController>();
             respawnSystem = GetComponent<PlayerRespawn>();
+
             ui = FindObjectOfType<GameUI>();
+
+            if (ui != null)
+                ui.UpdateHealth(currentHealth, maxHealth);
         }
 
         public void TakeDamage(int amount, int attackerDirection)
@@ -38,14 +40,16 @@ namespace ClearSky
             if (isDead) return;
 
             currentHealth -= amount;
-            anim.SetTrigger("hurt");
+            currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
+            if (ui != null)
+                ui.UpdateHealth(currentHealth, maxHealth);
+
+            anim.SetTrigger("hurt");
             ApplyKnockback(attackerDirection);
 
             if (currentHealth <= 0)
-            {
                 Die();
-            }
         }
 
         private void ApplyKnockback(int attackerDirection)
@@ -53,30 +57,55 @@ namespace ClearSky
             rb.velocity = Vector2.zero;
 
             float direction = attackerDirection == 0 ? -1 : attackerDirection;
-
-            rb.AddForce(new Vector2(direction * knockbackForceX, knockbackForceY), ForceMode2D.Impulse);
+            rb.AddForce(new Vector2(direction * knockbackForceX, knockbackForceY),
+                        ForceMode2D.Impulse);
         }
 
         private void Die()
         {
             isDead = true;
-            anim.SetTrigger("die");
 
+            anim.SetTrigger("die");
             controller.enabled = false;
             rb.velocity = Vector2.zero;
 
-            Invoke(nameof(OpenDeathUI), 1.2f); 
+            Invoke(nameof(OpenDeathUI), 1.2f);
         }
 
         private void OpenDeathUI()
         {
-            ui.ShowDeathScreen();
+            if (ui != null)
+                ui.ShowDeathScreen();
+        }
+
+        // ⭐ DeathZone burayı çağırır
+        public void TakeDeathZoneDamage(int amount)
+        {
+            if (isDead) return;
+
+            currentHealth -= amount;
+            currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+            if (ui != null)
+                ui.UpdateHealth(currentHealth, maxHealth);
+
+            if (currentHealth <= 0)
+            {
+                Die();
+            }
+            else
+            {
+                respawnSystem.Respawn();
+            }
         }
 
         public void RestoreFullHealth()
         {
             currentHealth = maxHealth;
             isDead = false;
+
+            if (ui != null)
+                ui.UpdateHealth(currentHealth, maxHealth);
         }
     }
 }
