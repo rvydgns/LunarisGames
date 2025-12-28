@@ -1,30 +1,40 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ClearSky
 {
     public class GameUI : MonoBehaviour
     {
-        [SerializeField] private GameObject deathPanel;
+        [Header("Health UI")]
+        public Image healthFill; // Fill Image
+
+        [Header("Death Screen")]
+        public GameObject deathScreen;
 
         private void Start()
         {
-            deathPanel.SetActive(false);
+            if (deathScreen != null)
+                deathScreen.SetActive(false);
+        }
+
+        // ⭐ CAN AZALMASINI GÖSTEREN FONKSİYON
+        public void UpdateHealth(int current, int max)
+        {
+            if (healthFill == null) return;
+
+            healthFill.fillAmount = (float)current / max;
         }
 
         public void ShowDeathScreen()
         {
-            deathPanel.SetActive(true);
-            Time.timeScale = 0f;
+            if (deathScreen != null)
+                deathScreen.SetActive(true);
         }
 
-        public void Retry()
+        public void HideDeathScreen()
         {
-            Time.timeScale = 1f;
-
-            PlayerRespawn player = FindObjectOfType<PlayerRespawn>();
-            player.RespawnPlayer();
-
-            deathPanel.SetActive(false);
+            if (deathScreen != null)
+                deathScreen.SetActive(false);
         }
     }
 }

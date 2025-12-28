@@ -1,7 +1,7 @@
 using UnityEngine;
 using ClearSky;
 
-public class CheckpointTrigger : MonoBehaviour
+public class CheckPoint : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -10,7 +10,7 @@ public class CheckpointTrigger : MonoBehaviour
             PlayerRespawn respawn = other.GetComponent<PlayerRespawn>();
             if (respawn != null)
             {
-                respawn.SetCheckpoint(transform);
+                respawn.SetCheckpoint(transform); // 🔥 SADECE BU
             }
         }
     }

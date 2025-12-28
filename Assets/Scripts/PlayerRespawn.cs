@@ -2,52 +2,116 @@ using UnityEngine;
 
 namespace ClearSky
 {
+    [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(Animator))]
     public class PlayerRespawn : MonoBehaviour
     {
-        public Transform currentCheckpoint;
-        private PlayerHealth health;
-        private Animator anim;
-        private SimplePlayerController controller;
+        [Header("Spawn Points")]
+        public Transform playerStart;         // Sahne başlangıcı
+        public Transform currentCheckpoint;   // Son checkpoint
+
+        [Header("Fall Death")]
+        public bool enableFallDeath = true;
+        public float deathY = -20f;
+
+        [Header("Respawn Settings")]
+        public bool restoreFullHealthOnRespawn = true;
+
         private Rigidbody2D rb;
+        private Animator anim;
+        private PlayerMovement movement;
+        private PlayerHealth health;
+
+        private bool isRespawning = false;
 
         private void Awake()
         {
-            health = GetComponent<PlayerHealth>();
-            anim = GetComponent<Animator>();
-            controller = GetComponent<SimplePlayerController>();
             rb = GetComponent<Rigidbody2D>();
+            anim = GetComponent<Animator>();
+            movement = GetComponent<PlayerMovement>();
+            health = GetComponent<PlayerHealth>();
         }
 
+        private void Start()
+        {
+            // 1️⃣ PlayerStart atanmamışsa SpawnPoint bul
+            if (playerStart == null)
+            {
+                GameObject spawn = GameObject.Find("SpawnPoint");
+                if (spawn != null)
+                    playerStart = spawn.transform;
+            }
+
+            // 2️⃣ Checkpoint yoksa başlangıcı kullan
+            if (currentCheckpoint == null)
+                currentCheckpoint = playerStart;
+
+            // 3️⃣ Oyuncuyu başlangıç noktasına koy
+            if (currentCheckpoint != null)
+                transform.position = currentCheckpoint.position;
+        }
+
+        private void Update()
+        {
+            if (!enableFallDeath || isRespawning) return;
+
+            // Aşağı düşerse respawn (can işini PlayerHealth halleder)
+            if (transform.position.y < deathY)
+            {
+                Respawn();
+            }
+        }
+
+        // ⭐ Checkpoint trigger çağırır
         public void SetCheckpoint(Transform checkpoint)
         {
             currentCheckpoint = checkpoint;
+            Debug.Log("Checkpoint set: " + checkpoint.name);
         }
 
-        public void RespawnPlayer()
+        // ⭐ PlayerHealth / DeathZone çağırır
+        public void Respawn()
         {
-            if (currentCheckpoint == null)
+            if (isRespawning) return;
+
+            Transform spawnPoint = currentCheckpoint != null
+                ? currentCheckpoint
+                : playerStart;
+
+            if (spawnPoint == null)
             {
-                Debug.LogWarning("No checkpoint assigned!");
+                Debug.LogWarning("Respawn failed: No spawn point.");
                 return;
             }
 
-            // 1. Karakteri kontrol edilmeyen ölüm pozisyonundan kurtar
+            isRespawning = true;
+
+            // Movement kapat
+            if (movement != null)
+                movement.enabled = false;
+
+            // Fizik sıfırla
             rb.velocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            rb.rotation = 0f;
 
-            // 2. Karakteri checkpoint pozisyonuna taşı
-            transform.position = currentCheckpoint.position;
+            // Konum taşı
+            transform.position = spawnPoint.position;
 
-            // 3. Sağlığı full yap
-            health.RestoreFullHealth();
+            // Can yenile
+            if (restoreFullHealthOnRespawn && health != null)
+                health.RestoreFullHealth();
 
-            // 4. Karakter davranışlarını aç
-            controller.enabled = true;
+            // Animasyon reset
+            anim.Rebind();
+            anim.Update(0f);
+            anim.Play("Idle");
 
-            // 5. Ölüm animasyonunu kapat
-            anim.ResetTrigger("die");
-            anim.Play("Idle"); // Idle animasyonuna dön
+            // Movement aç
+            if (movement != null)
+                movement.enabled = true;
 
-            Debug.Log("Player Respawned!");
+            isRespawning = false;
         }
     }
 }

@@ -4,26 +4,42 @@ using UnityEngine.SceneManagement;
 
 public class MapManager : MonoBehaviour
 {
-    void Start()
+   void Start()
+{
+    if (!PlayerPrefs.HasKey("LevelUnlocked_1"))
+        PlayerPrefs.SetInt("LevelUnlocked_1", 1);
+
+    Button[] buttons = FindObjectsOfType<Button>(true);
+
+    foreach (Button btn in buttons)
     {
-        if (!PlayerPrefs.HasKey("LevelUnlocked_1"))
-            PlayerPrefs.SetInt("LevelUnlocked_1", 1);
+        string name = btn.gameObject.name;
 
-        Button[] buttons = FindObjectsOfType<Button>(true);
-
-        foreach (Button btn in buttons)
+        if (name.StartsWith("Level") && name.EndsWith("Button"))
         {
-            string name = btn.gameObject.name;
+            int levelNumber = ExtractLevelNumber(name);
+            bool unlocked = PlayerPrefs.GetInt("LevelUnlocked_" + levelNumber, 0) == 1;
 
-            if (name.StartsWith("Level") && name.EndsWith("Button"))
+            btn.interactable = unlocked;
+
+            Image img = btn.GetComponent<Image>();
+
+            if (unlocked)
             {
-                int levelNumber = ExtractLevelNumber(name);
+                img.color = Color.white; // mavi olmasın
+                img.sprite = btn.spriteState.highlightedSprite != null
+                    ? btn.spriteState.highlightedSprite
+                    : img.sprite;
+            }
+            else
+            {
+                img.color = Color.white; // kritik nokta
+                img.sprite = btn.spriteState.disabledSprite;
+            }
 
-                bool unlocked = PlayerPrefs.GetInt("LevelUnlocked_" + levelNumber, 0) == 1;
-
-                btn.interactable = unlocked;
-
-                btn.onClick.RemoveAllListeners();
+            btn.onClick.RemoveAllListeners();
+            if (unlocked)
+            {
                 btn.onClick.AddListener(() =>
                 {
                     SceneManager.LoadScene("Level" + levelNumber + "Scene");
@@ -31,6 +47,7 @@ public class MapManager : MonoBehaviour
             }
         }
     }
+}
 
     int ExtractLevelNumber(string name)
     {
