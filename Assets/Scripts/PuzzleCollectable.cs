@@ -14,6 +14,6 @@ public class PuzzleCollectable : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        // yanlışsa hiçbir şey olmaz
+       
     }
 }

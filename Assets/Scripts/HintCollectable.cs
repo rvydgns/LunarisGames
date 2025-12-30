@@ -26,7 +26,6 @@ public class HintCollectable : MonoBehaviour
             return;
         }
 
-        // 🎯 PlayerMovement al
         PlayerMovement player = other.GetComponent<PlayerMovement>();
         if (player != null)
         {
@@ -37,10 +36,10 @@ public class HintCollectable : MonoBehaviour
             Debug.LogWarning("⚠ PlayerMovement bulunamadı!", this);
         }
 
-        // 📝 Hint göster
+        
         StartCoroutine(ShowHint());
 
-        // 🧹 Collectable'ı sil
+       
         Destroy(gameObject);
     }
 

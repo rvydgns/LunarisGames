@@ -5,7 +5,7 @@ public class PauseController : MonoBehaviour
     public GameObject pauseMenu;
     private bool isPaused = false;
 
-    // Butona bağlanacak metot
+    
     public void TogglePause()
     {
         if (isPaused)

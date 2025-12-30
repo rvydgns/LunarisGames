@@ -6,7 +6,7 @@ namespace ClearSky
     public class GameUI : MonoBehaviour
     {
         [Header("Health UI")]
-        public Image healthFill; // Fill Image
+        public Image healthFill; 
 
         [Header("Death Screen")]
         public GameObject deathScreen;
@@ -17,7 +17,7 @@ namespace ClearSky
                 deathScreen.SetActive(false);
         }
 
-        // ⭐ CAN AZALMASINI GÖSTEREN FONKSİYON
+        
         public void UpdateHealth(int current, int max)
         {
             if (healthFill == null) return;

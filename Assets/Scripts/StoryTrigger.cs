@@ -4,10 +4,10 @@ using System.Collections;
 
 public class StoryTrigger : MonoBehaviour
 {
-    public GameObject storyPanel; // Paneli inspector'dan atayabilirsin
-    public TextMeshProUGUI storyText; // Panelin içindeki Text
-    [TextArea] public string[] storyLines; // Yazılacak hikaye satırları
-    public float lineDisplayTime = 3f; // Her satırın ekranda kalma süresi
+    public GameObject storyPanel; 
+    public TextMeshProUGUI storyText; 
+    [TextArea] public string[] storyLines; 
+    public float lineDisplayTime = 3f; 
 
     private int currentLine = 0;
     private CanvasGroup canvasGroup;
@@ -15,7 +15,7 @@ public class StoryTrigger : MonoBehaviour
 
     private void Start()
     {
-        // Panel başlangıçta kapalı ve şeffaf olsun
+        
         canvasGroup = storyPanel.GetComponent<CanvasGroup>();
         if (canvasGroup == null)
         {
@@ -34,7 +34,7 @@ public class StoryTrigger : MonoBehaviour
             currentLine = 0;
             storyText.text = storyLines[currentLine];
 
-            // Player hareketini durdur
+            
             PlayerMovement player = other.GetComponent<PlayerMovement>();
             if (player != null)
             {
@@ -47,10 +47,10 @@ public class StoryTrigger : MonoBehaviour
 
     private IEnumerator PlayStory()
     {
-        // Fade-in panel
+        
         yield return StartCoroutine(FadeIn());
 
-        // Tüm satırları sırayla göster
+        
         while (currentLine < storyLines.Length)
         {
             storyText.text = storyLines[currentLine];
@@ -58,7 +58,7 @@ public class StoryTrigger : MonoBehaviour
             yield return new WaitForSeconds(lineDisplayTime);
         }
 
-        // Fade-out panel ve player'ı serbest bırak
+        
         yield return StartCoroutine(FadeOut());
     }
 
@@ -89,7 +89,7 @@ public class StoryTrigger : MonoBehaviour
         storyPanel.SetActive(false);
         storyActive = false;
 
-        // Player hareketini tekrar aç
+        
         PlayerMovement player = GameObject.FindWithTag("Player").GetComponent<PlayerMovement>();
         if (player != null)
         {

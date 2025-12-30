@@ -8,7 +8,7 @@ public class StoryPopupController : MonoBehaviour
     public StoryData storyData;
 
     [Header("UI References")]
-    public GameObject rootPanel;     // popup'ın en üst objesi
+    public GameObject rootPanel;     
     public TMP_Text storyText;
     public TMP_Text continueText;
 
@@ -16,15 +16,15 @@ public class StoryPopupController : MonoBehaviour
     public GameObject[] objectsToDeactivate;
 
     [Header("Panel Sequence (Left Click)")]
-    public GameObject[] panelSequence;  // Inspector'dan eklenecek paneller
+    public GameObject[] panelSequence;  
 
     [Header("Flow")]
     public bool startHidden = true;
     public bool loadSceneWhenFinished = true;
-    public string nextSceneName = "Level1";
+    public string nextSceneName = "Level1Scene";
 
     private int pageIndex = 0;
-    private int panelIndex = 0;  // Hangi panel aktif
+    private int panelIndex = 0;  
 
     private void Awake()
     {
@@ -34,17 +34,17 @@ public class StoryPopupController : MonoBehaviour
 
     private void Update()
     {
-        // rootPanel aktifken sol tıkla paneller arasında geçiş yap
+       
         if (rootPanel != null && rootPanel.activeSelf && Input.GetMouseButtonDown(0))
         {
             OnLeftClick();
         }
     }
 
-    // Başlat butonuna bağlayacaksın
+    
     public void Open()
     {
-        // Belirtilen objeleri deaktif et
+        
         if (objectsToDeactivate != null && objectsToDeactivate.Length > 0)
         {
             foreach (GameObject obj in objectsToDeactivate)
@@ -61,7 +61,7 @@ public class StoryPopupController : MonoBehaviour
         ShowPanelAtIndex(0);
     }
 
-    // Sol tık ile otomatik çağrılacak
+    
     private void OnLeftClick()
     {
         if (panelSequence == null || panelSequence.Length == 0) return;
@@ -74,7 +74,7 @@ public class StoryPopupController : MonoBehaviour
         }
         else
         {
-            // Tüm paneller bitti, bir sonraki tıkta sahneye geç
+            
             if (loadSceneWhenFinished)
                 SceneManager.LoadScene(nextSceneName);
         }
@@ -93,7 +93,7 @@ public class StoryPopupController : MonoBehaviour
         }
     }
 
-    // Parşömene tıklayınca çağrılacak
+    
     public void NextPage()
     {
         if (storyData == null || storyData.pages == null || storyData.pages.Length == 0) return;

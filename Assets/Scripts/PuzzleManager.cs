@@ -7,10 +7,7 @@ public class PuzzleManager : MonoBehaviour
 
     [Header("Puzzle State")]
     private int step = 0;
-    // 0 = hiçbir şey
-    // 1 = silah
-    // 2 = kitap
-    // 3 = elmas → tamamlandı
+  
 
     [Header("References")]
     public GameObject gateObject;
@@ -18,7 +15,7 @@ public class PuzzleManager : MonoBehaviour
 
     private void Awake()
     {
-        // 🔒 Singleton güvenliği
+        
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -33,7 +30,7 @@ public class PuzzleManager : MonoBehaviour
 
     public bool TryCollect(CollectableType type)
     {
-        // ✅ DOĞRU SIRA
+        
         if (step == 0 && type == CollectableType.Weapon)
         {
             step = 1;
@@ -53,7 +50,7 @@ public class PuzzleManager : MonoBehaviour
             return true;
         }
 
-        // ❌ YANLIŞ SIRA
+        
         ShowWarning();
         return false;
     }
@@ -63,7 +60,7 @@ public class PuzzleManager : MonoBehaviour
         Debug.Log("🎉 Puzzle tamamlandı!");
 
         if (gateObject != null)
-            gateObject.SetActive(false); // 🚪 Alan açılır
+            gateObject.SetActive(false); 
     }
 
     void ShowWarning()

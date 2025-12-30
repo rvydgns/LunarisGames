@@ -13,7 +13,7 @@ public class Level1Manager : MonoBehaviour
 
     void Start()
     {
-        // Player otomatik bulunamazsa sahneden bul
+        
         if (player == null)
         {
             player = FindObjectOfType<PlayerMovement>();
@@ -25,16 +25,16 @@ public class Level1Manager : MonoBehaviour
             return;
         }
 
-        // Orijinal hızı kaydet
+        
         originalMoveSpeed = player.moveSpeed;
 
-        // Level 1 için hızı düşür
+      
         player.moveSpeed = level1MoveSpeed;
 
         Debug.Log("Level 1 speed applied: " + level1MoveSpeed);
     }
 
-    // İstersen level bitince çağırırsın
+   
     public void RestorePlayerSpeed()
     {
         if (player != null)

@@ -4,9 +4,9 @@ using UnityEngine.SceneManagement;
 public class MapButton : MonoBehaviour
 {
     [Header("Toggle Object")]
-    public GameObject targetObject;  // Inspector'dan aktif/deaktif edilecek obje
+    public GameObject targetObject;  
 
-    // Butona bağlanacak metot
+    
     public void ToggleObject()
     {
         if (targetObject == null)
@@ -15,7 +15,7 @@ public class MapButton : MonoBehaviour
             return;
         }
 
-        // Objeyi aktif/deaktif et
+        
         targetObject.SetActive(!targetObject.activeSelf);
     }
 }

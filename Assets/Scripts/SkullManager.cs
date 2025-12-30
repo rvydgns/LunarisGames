@@ -20,7 +20,7 @@ public class SkullManager : MonoBehaviour
         if (collectedSkulls >= requiredSkulls)
         {
             Debug.Log("Puzzle tamamlandı!");
-            // BURAYA SONRA Aris açılacak
+          
         }
     }
 }

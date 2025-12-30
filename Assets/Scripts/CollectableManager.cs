@@ -7,13 +7,13 @@ public class CollectableManager : MonoBehaviour
     public static CollectableManager Instance { get; private set; }
 
     [Header("UI Settings")]
-    public TMP_Text collectableText;  // X/Total gösterilecek text
+    public TMP_Text collectableText;  
 
     [Header("Map Settings")]
-    public int totalCollectablesInMap = 10;  // Bu mapte toplam kaç obje var
+    public int totalCollectablesInMap = 10;  
 
     [Header("Activation Objects")]
-    public ActivationPair[] activationObjects;  // Hangi item hangi objeyi aktifleştirir
+    public ActivationPair[] activationObjects;  
 
     private Dictionary<string, int> collectedItems = new Dictionary<string, int>();
     private int totalCollected = 0;
@@ -21,8 +21,8 @@ public class CollectableManager : MonoBehaviour
     [System.Serializable]
     public class ActivationPair
     {
-        public string itemID;  // Örn: "Skull", "Heart"
-        public GameObject objectToActivate;  // Aktifleşecek obje
+        public string itemID;  
+        public GameObject objectToActivate;  
     }
 
     private void Awake()
@@ -40,10 +40,10 @@ public class CollectableManager : MonoBehaviour
         UpdateUI();
     }
 
-    // Obje toplandığında çağrılacak
+   
     public void CollectItem(string itemID, int amount = 1)
     {
-        // Toplanan sayıyı arttır
+       
         if (!collectedItems.ContainsKey(itemID))
         {
             collectedItems[itemID] = 0;
@@ -54,20 +54,20 @@ public class CollectableManager : MonoBehaviour
 
         Debug.Log($"{itemID} toplandı! Toplam: {collectedItems[itemID]}");
 
-        // UI'ı güncelle
+       
         UpdateUI();
 
-        // İlgili objeyi aktifleştir
+    
         ActivateObjectForItem(itemID);
     }
 
-    // Belirli item ID'si için toplanan sayıyı al
+   
     public int GetCollectedCount(string itemID)
     {
         return collectedItems.ContainsKey(itemID) ? collectedItems[itemID] : 0;
     }
 
-    // Toplam toplanan sayıyı al
+   
     public int GetTotalCollected()
     {
         return totalCollected;
@@ -94,7 +94,7 @@ public class CollectableManager : MonoBehaviour
         }
     }
 
-    // Tüm verileri sıfırla (yeni map için)
+    
     public void ResetCollection()
     {
         collectedItems.Clear();

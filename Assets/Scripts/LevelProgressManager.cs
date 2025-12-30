@@ -19,12 +19,12 @@ public class LevelProgressManager : MonoBehaviour
 
     public void CompleteLevel(int levelIndex)
     {
-        // Level tamamlandı kaydı
+        
         PlayerPrefs.SetInt("Level_" + levelIndex, 1);
 
         Debug.Log("Level " + levelIndex + " completed!");
 
-        // Map ekranına dön
+        
         SceneManager.LoadScene("MapScene");
     }
 

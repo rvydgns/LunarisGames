@@ -61,9 +61,7 @@ namespace ClearSky
             HandleHealPower();
         }
 
-        // =========================
-        // DAMAGE
-        // =========================
+       
         public void TakeDamage(int amount, int attackerDirection = 0)
         {
             if (isDead) return;
@@ -96,9 +94,7 @@ namespace ClearSky
             );
         }
 
-        // =========================
-        // DEATH
-        // =========================
+        
         private void Die()
         {
             if (isDead) return;
@@ -141,9 +137,7 @@ namespace ClearSky
                 gameUI.ShowDeathScreen();
         }
 
-        // =========================
-        // HEAL
-        // =========================
+        
         public void Heal(int amount)
         {
             if (isDead) return;
@@ -168,9 +162,7 @@ namespace ClearSky
             }
         }
 
-        // =========================
-        // UTILS
-        // =========================
+     
         public void RestoreFullHealth()
         {
             currentHealth = maxHealth;

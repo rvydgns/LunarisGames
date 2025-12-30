@@ -10,7 +10,7 @@ public class CheckPoint : MonoBehaviour
             PlayerRespawn respawn = other.GetComponent<PlayerRespawn>();
             if (respawn != null)
             {
-                respawn.SetCheckpoint(transform); // 🔥 SADECE BU
+                respawn.SetCheckpoint(transform); 
             }
         }
     }

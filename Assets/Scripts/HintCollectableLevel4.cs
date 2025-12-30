@@ -26,7 +26,7 @@ public class HintCollectableLevel4 : MonoBehaviour
             return;
         }
 
-        // 🎯 DOĞRU SCRIPT
+       
         PlayerMovement player = other.GetComponent<PlayerMovement>();
         if (player != null)
         {

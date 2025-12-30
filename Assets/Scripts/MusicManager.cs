@@ -26,7 +26,7 @@ public class MusicManager : MonoBehaviour
         src.loop = true;
         src.spatialBlend = 0f;
 
-        // StartScene açılınca start müziğini başlat
+        
         PlayMusic(startSceneMusic);
     }
 
@@ -45,7 +45,7 @@ public class MusicManager : MonoBehaviour
         src.clip = null;
     }
 
-    // Dışarıdan kolay çağırmak için
+    
     public void PlayStartMusic() => PlayMusic(startSceneMusic);
     public void PlayLevel1Music() => PlayMusic(level1Music);
 }

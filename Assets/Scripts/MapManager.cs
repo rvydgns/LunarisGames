@@ -26,14 +26,14 @@ public class MapManager : MonoBehaviour
 
             if (unlocked)
             {
-                img.color = Color.white; // mavi olmasın
+                img.color = Color.white; 
                 img.sprite = btn.spriteState.highlightedSprite != null
                     ? btn.spriteState.highlightedSprite
                     : img.sprite;
             }
             else
             {
-                img.color = Color.white; // kritik nokta
+                img.color = Color.white; 
                 img.sprite = btn.spriteState.disabledSprite;
             }
 

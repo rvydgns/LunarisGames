@@ -25,17 +25,17 @@ public class CollectableItem : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         startPos = transform.position;
 
-        // Güvenlik: collider trigger olsun
+     
         GetComponent<Collider2D>().isTrigger = true;
     }
 
     void Update()
     {
-        // Yukarı - aşağı süzülme
+      
         float yOffset = Mathf.Sin(Time.time * floatSpeed) * floatHeight;
         transform.position = startPos + new Vector3(0, yOffset, 0);
 
-        // Parlama (alpha)
+        
         float alpha = Mathf.Lerp(
             minAlpha,
             maxAlpha,
@@ -52,7 +52,7 @@ public class CollectableItem : MonoBehaviour
         {
             Debug.Log($"Toplandı: {itemID}");
 
-            // Manager'a bildir
+            
             if (CollectableManager.Instance != null)
             {
                 CollectableManager.Instance.CollectItem(itemID, amount);

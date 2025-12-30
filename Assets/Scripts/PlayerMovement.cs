@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
     public float attackDuration = 0.4f;
 
     [Header("Speed Boost")]
-    public bool canSpeedBoost = false; // Level 5’te aç
+    public bool canSpeedBoost = false; 
     public float speedMultiplier = 1.5f;
     public KeyCode boostKey = KeyCode.LeftShift;
 
@@ -69,27 +69,27 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isDead) return;
 
-        // INPUT
+        
         moveInput = Input.GetAxisRaw("Horizontal");
 
         bool jumpPressed = Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow);
         bool jumpReleased = Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.UpArrow);
         bool attackPressed = Input.GetKeyDown(KeyCode.J);
 
-        // SPEED BOOST
+        
         if (canSpeedBoost && Input.GetKey(boostKey))
             moveSpeed = defaultMoveSpeed * speedMultiplier;
         else
             moveSpeed = defaultMoveSpeed;
 
-        // GROUND CHECK
+        
         isGrounded = Physics2D.OverlapCircle(
             groundCheck.position,
             groundCheckRadius,
             groundLayer
         );
 
-        // FLIP
+        
         if (moveInput > 0.01f)
         {
             transform.localScale = new Vector3(
@@ -107,23 +107,23 @@ public class PlayerMovement : MonoBehaviour
             );
         }
 
-        // ANIMATOR
+        
         anim.SetBool("isRun", Mathf.Abs(moveInput) > 0.01f && isGrounded);
         anim.SetBool("isJump", !isGrounded);
 
-        // COYOTE TIME
+        
         if (isGrounded)
             coyoteTimer = coyoteTime;
         else
             coyoteTimer -= Time.deltaTime;
 
-        // JUMP BUFFER
+        
         if (jumpPressed)
             jumpBufferTimer = jumpBufferTime;
         else
             jumpBufferTimer -= Time.deltaTime;
 
-        // JUMP
+        
         if (jumpBufferTimer > 0 && coyoteTimer > 0)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
@@ -132,7 +132,7 @@ public class PlayerMovement : MonoBehaviour
             anim.SetTrigger("jump");
         }
 
-        // JUMP CUT
+        
         if (jumpReleased && rb.velocity.y > 0)
         {
             rb.velocity = new Vector2(
@@ -141,7 +141,7 @@ public class PlayerMovement : MonoBehaviour
             );
         }
 
-        // ATTACK
+        
         if (attackPressed && !isAttacking)
         {
             StartCoroutine(AttackRoutine());
