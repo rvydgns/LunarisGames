@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 985ba504872e84baab0d05c9acbfb044, type: 3}
+  m_Name: IntroStoryData
+  m_EditorClassIdentifier: 
+  pages:
+  - "Hollowvale bir zamanlar \u0131\u015F\u0131\u011F\u0131n, \u015Fark\u0131lar\u0131n
+    ve b\xFCy\xFCn\xFCn kasabas\u0131yd\u0131.\n\u015Eimdi ise ad\u0131n\u0131 bile
+    f\u0131s\u0131ldamaya \xE7ekinenlerin b\u0131rakt\u0131\u011F\u0131 bir sisin
+    i\xE7inde uyuyor.\nO gece, g\xF6ky\xFCz\xFC ay \u0131\u015F\u0131\u011F\u0131n\u0131
+    saklad\u0131.\nKasaban\u0131n fenerleri tek tek s\xF6nd\xFC.\nVe herkesin kalbinden
+    ayn\u0131 \u015Fey kopar\u0131ld\u0131: hat\u0131rlamak.\n"
+  - "Karanl\u0131k bir b\xFCy\xFC, kasaban\u0131n eski b\xFCy\xFCc\xFClerini bedenlerinden
+    ay\u0131rd\u0131;\ngeriye yaln\u0131zca ta\u015Flara, mezarlara ve k\u0131r\u0131k
+    evlere tutunan kay\u0131p ruhlar kald\u0131.\nHollowvale\u2019in laneti, sessizli\u011Fini
+    b\xF6yle \xF6rd\xFC.\n"
+  - "Luna, bu sisin i\xE7inden geri d\xF6nen tek ki\u015Fiydi.\nGen\xE7 bir cad\u0131
+    \xE7\u0131ra\u011F\u0131\u2026 i\xE7indeki \u0131\u015F\u0131\u011F\u0131 s\xF6nd\xFCrmemeye
+    yeminli.\n\nHer kurtar\u0131lan ruh, Luna\u2019ya yaln\u0131zca yeni bir b\xFCy\xFC
+    de\u011Fil;\nayn\u0131 zamanda kasaban\u0131n saklad\u0131\u011F\u0131 bir ger\xE7e\u011Fi
+    de f\u0131s\u0131ldayacak.\n\nVe yolun sonunda, Karanl\u0131k B\xFCy\xFCc\xFC
+    ile y\xFCzle\u015Fmek ka\xE7\u0131n\u0131lmaz.\nBaz\u0131 ruhlar\u2026 yaln\u0131zca
+    hat\u0131rland\u0131klar\u0131nda \xF6zg\xFCr kal\u0131r.\n"
