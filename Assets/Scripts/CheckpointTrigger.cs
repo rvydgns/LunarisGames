@@ -1,25 +1,17 @@
 using UnityEngine;
+using ClearSky;
 
-namespace ClearSky
+public class CheckpointTrigger : MonoBehaviour
 {
-    public class CheckpointTrigger : MonoBehaviour
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        [SerializeField] private Transform checkpointPoint;
-
-        private void Reset()
+        if (other.CompareTag("Player"))
         {
-            checkpointPoint = transform; // otomatik kendisini referans alsın
-        }
-
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            PlayerRespawn player = collision.GetComponent<PlayerRespawn>();
-            if (player == null) return;
-
-            // checkpointPoint boşsa kendini kullan
-            Transform cp = checkpointPoint != null ? checkpointPoint : transform;
-
-            player.SetCheckpoint(cp);
+            PlayerRespawn respawn = other.GetComponent<PlayerRespawn>();
+            if (respawn != null)
+            {
+                respawn.SetCheckpoint(transform);
+            }
         }
     }
 }

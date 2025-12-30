@@ -1,18 +1,16 @@
 using UnityEngine;
+using System.Collections;
 
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Animator))]
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
     public float moveSpeed = 5f;
+    public bool canMove = true;
+
+    [Header("Jump")]
     public float jumpForce = 12f;
-
-    [Header("Air Control")]
-    [Range(0f, 1f)]
-    public float airControlMultiplier = 0.35f;
-
-    [Header("Jump Cut")]
-    [Range(0f, 1f)]
-    public float jumpCutMultiplier = 0.5f;
 
     [Header("Coyote Time")]
     public float coyoteTime = 0.1f;
@@ -20,77 +18,122 @@ public class PlayerMovement : MonoBehaviour
     [Header("Jump Buffer")]
     public float jumpBufferTime = 0.1f;
 
+    [Header("Jump Cut")]
+    [Range(0f, 1f)]
+    public float jumpCutMultiplier = 0.5f;
+
+    [Header("Air Control")]
+    [Range(0f, 1f)]
+    public float airControlMultiplier = 0.35f;
+
     [Header("Ground Check")]
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
     public LayerMask groundLayer;
 
-    [Header("Cutscene Control")]
-    public bool canMove = true;
+    [Header("Combat")]
+    public float attackDuration = 0.4f;
+
+    [Header("Speed Boost")]
+    public bool canSpeedBoost = false; // Level 5’te aç
+    public float speedMultiplier = 1.5f;
+    public KeyCode boostKey = KeyCode.LeftShift;
+
+    private float defaultMoveSpeed;
 
     private Rigidbody2D rb;
     private Animator anim;
 
-    private bool isGrounded;
     private float moveInput;
+    private bool isGrounded;
 
     private float coyoteTimer;
     private float jumpBufferTimer;
 
-    void Start()
+    private bool isFrozen;
+    private bool isAttacking;
+    private bool isDead;
+
+    private Vector3 originalScale;
+
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+
+        originalScale = transform.localScale;
+        defaultMoveSpeed = moveSpeed;
     }
 
     void Update()
     {
-        // CUTSCENE KİLİDİ
-        if (!canMove)
-        {
-            rb.velocity = new Vector2(0f, rb.velocity.y);
-            anim.SetBool("isRun", false);
-            return;
-        }
+        if (isDead) return;
 
         // INPUT
         moveInput = Input.GetAxisRaw("Horizontal");
 
-        // RUN animasyonu
-        anim.SetBool("isRun", moveInput != 0 && isGrounded);
+        bool jumpPressed = Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow);
+        bool jumpReleased = Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.UpArrow);
+        bool attackPressed = Input.GetKeyDown(KeyCode.J);
 
-        // Yön çevirme
-        if (moveInput > 0)
-            transform.localScale = new Vector3(1, 1, 1);
-        else if (moveInput < 0)
-            transform.localScale = new Vector3(-1, 1, 1);
+        // SPEED BOOST
+        if (canSpeedBoost && Input.GetKey(boostKey))
+            moveSpeed = defaultMoveSpeed * speedMultiplier;
+        else
+            moveSpeed = defaultMoveSpeed;
 
-        // JUMP BUFFER INPUT
-        if (Input.GetKeyDown(KeyCode.Space))
+        // GROUND CHECK
+        isGrounded = Physics2D.OverlapCircle(
+            groundCheck.position,
+            groundCheckRadius,
+            groundLayer
+        );
+
+        // FLIP
+        if (moveInput > 0.01f)
         {
-            jumpBufferTimer = jumpBufferTime;
+            transform.localScale = new Vector3(
+                Mathf.Abs(originalScale.x),
+                originalScale.y,
+                originalScale.z
+            );
+        }
+        else if (moveInput < -0.01f)
+        {
+            transform.localScale = new Vector3(
+                -Mathf.Abs(originalScale.x),
+                originalScale.y,
+                originalScale.z
+            );
         }
 
-        // COYOTE TIMER
+        // ANIMATOR
+        anim.SetBool("isRun", Mathf.Abs(moveInput) > 0.01f && isGrounded);
+        anim.SetBool("isJump", !isGrounded);
+
+        // COYOTE TIME
         if (isGrounded)
             coyoteTimer = coyoteTime;
         else
             coyoteTimer -= Time.deltaTime;
 
-        // JUMP BUFFER TIMER düşür
-        if (jumpBufferTimer > 0)
+        // JUMP BUFFER
+        if (jumpPressed)
+            jumpBufferTimer = jumpBufferTime;
+        else
             jumpBufferTimer -= Time.deltaTime;
 
-        // ASIL ZIPLAMA KARARI (buffer + coyote birlikte)
-        if (jumpBufferTimer > 0f && coyoteTimer > 0f)
+        // JUMP
+        if (jumpBufferTimer > 0 && coyoteTimer > 0)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            jumpBufferTimer = 0f;
-            coyoteTimer = 0f;
+            jumpBufferTimer = 0;
+            coyoteTimer = 0;
+            anim.SetTrigger("jump");
         }
 
         // JUMP CUT
-        if (Input.GetKeyUp(KeyCode.Space) && rb.velocity.y > 0)
+        if (jumpReleased && rb.velocity.y > 0)
         {
             rb.velocity = new Vector2(
                 rb.velocity.x,
@@ -98,35 +141,68 @@ public class PlayerMovement : MonoBehaviour
             );
         }
 
-        // Jump animasyonu
-        anim.SetBool("isJump", !isGrounded);
+        // ATTACK
+        if (attackPressed && !isAttacking)
+        {
+            StartCoroutine(AttackRoutine());
+        }
     }
 
     void FixedUpdate()
     {
-        // Ground check
-        isGrounded = Physics2D.OverlapCircle(
-            groundCheck.position,
-            groundCheckRadius,
-            groundLayer
-        );
+        if (!canMove || isFrozen || isAttacking || isDead) return;
 
-        if (!canMove)
-            return;
+        float control = isGrounded ? 1f : airControlMultiplier;
 
-        // Yer / hava kontrol oranı
-        float controlMultiplier = isGrounded ? 1f : airControlMultiplier;
-
-        // Hareket
         rb.velocity = new Vector2(
-            moveInput * moveSpeed * controlMultiplier,
+            moveInput * moveSpeed * control,
             rb.velocity.y
         );
     }
 
-    private void OnDrawGizmosSelected()
+    IEnumerator AttackRoutine()
+    {
+        isAttacking = true;
+        anim.SetTrigger("attack");
+        rb.velocity = Vector2.zero;
+
+        yield return new WaitForSeconds(attackDuration);
+
+        isAttacking = false;
+    }
+
+    public void Die()
+    {
+        if (isDead) return;
+
+        isDead = true;
+        canMove = false;
+
+        rb.velocity = Vector2.zero;
+        rb.simulated = false;
+
+        anim.SetTrigger("die");
+    }
+
+    public void Freeze(float duration)
+    {
+        StartCoroutine(FreezeRoutine(duration));
+    }
+
+    IEnumerator FreezeRoutine(float duration)
+    {
+        isFrozen = true;
+        rb.velocity = Vector2.zero;
+
+        yield return new WaitForSeconds(duration);
+
+        isFrozen = false;
+    }
+
+    void OnDrawGizmosSelected()
     {
         if (groundCheck == null) return;
+
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
     }

@@ -3,13 +3,16 @@ using UnityEngine.SceneManagement;
 
 public class LevelEndTrigger : MonoBehaviour
 {
-    public int nextLevelIndex = 2; // Örn: Level1 bittiğinde Level2 açılsın
+    public int levelIndex; // bu levelin numarası (1,2,3...)
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            PlayerPrefs.SetInt("UnlockedLevel", nextLevelIndex);
+            // 🔓 Bir sonraki leveli aç
+            MapManager.UnlockNextLevel(levelIndex);
+
+            // 🗺 Map ekranına dön
             SceneManager.LoadScene("MapScene");
         }
     }

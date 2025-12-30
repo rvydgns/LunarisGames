@@ -52,8 +52,11 @@ public class CollectableItem : MonoBehaviour
         {
             Debug.Log($"Toplandı: {itemID}");
 
-            // İLERİDE BURAYA BAĞLAYACAĞIZ:
-            // CollectableManager.Instance.Add(itemID, amount);
+            // Manager'a bildir
+            if (CollectableManager.Instance != null)
+            {
+                CollectableManager.Instance.CollectItem(itemID, amount);
+            }
 
             Destroy(gameObject);
         }

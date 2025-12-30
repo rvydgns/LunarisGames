@@ -1,22 +1,25 @@
 using UnityEngine;
+using ClearSky;
 
-namespace ClearSky
+public class DeathZone : MonoBehaviour
 {
-    public class DeathZone : MonoBehaviour
+    public int damage = 999;
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        public int damage = 10;
+        // Health al
+        PlayerHealth health = other.GetComponent<PlayerHealth>();
+        PlayerRespawn respawn = other.GetComponent<PlayerRespawn>();
 
-        private void OnTriggerEnter2D(Collider2D collision)
+        if (health != null)
         {
-            if (collision.CompareTag("Player"))
-            {
-                PlayerHealth health = collision.GetComponent<PlayerHealth>();
+            health.TakeDamage(damage);
+        }
 
-                if (health != null)
-                {
-                    health.TakeDeathZoneDamage(damage);
-                }
-            }
+        // ⭐ Ölüm sonrası respawn
+        if (respawn != null)
+        {
+            respawn.Respawn();
         }
     }
 }
